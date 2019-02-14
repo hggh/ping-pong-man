@@ -43,13 +43,36 @@ const static CRGB::HTMLColorCode colors[35] = {
 CRGB leds[1];
 #define DIRECTION_UP 1
 #define DIRECTION_DOWN 0
+#define PIN_RGB_LED 3
+#define PIN_EYE_LEFT 4
+#define PIN_EYE_RIGHT 2
 
 volatile uint8_t brightness = 0;
 volatile uint8_t hold = 0;
 volatile short direction = DIRECTION_UP;
 
+volatile int runs = 0;
+volatile uint8_t eye_left = 1;
+volatile uint8_t sleep_0 = 10;
+volatile uint8_t sleep_1 = 30;
+
+// called every ~ 35ms
 ISR(TIMER1_COMPA_vect) {
-	if (brightness < 10 && hold < 2) {
+	runs++;
+
+	if (runs == 8) {
+		eye_left = 0;
+		sleep_0 = random(10, 12);
+	}
+	if (runs == sleep_0) {
+		eye_left = 1;
+		sleep_1 = random(30, 60);
+	}
+	if (runs > sleep_1) {
+		runs = 0;
+	}
+
+	if (brightness < 10 && hold < 4) {
 		hold++;
 		return;
 	}
@@ -81,17 +104,22 @@ ISR(TIMER1_COMPA_vect) {
 
 
 void setup() {
-	FastLED.addLeds<PL9823, 3>(leds, 1);
+	FastLED.addLeds<PL9823, PIN_RGB_LED>(leds, 1);
 	FastLED.setBrightness(0);
 	FastLED.clear(true);
 	FastLED.show();
 
 	leds[0] = colors[random(34)];
-
 	TCCR1 |= (1 << CTC1);
 	TCCR1 |= (1 << CS13) | (1 << CS11) | (1 << CS10);
 	OCR1C = 280;
 	TIMSK |= (1 << OCIE1A);
+
+	pinMode(PIN_EYE_LEFT, OUTPUT);
+	digitalWrite(PIN_EYE_LEFT, HIGH);
+
+	pinMode(PIN_EYE_RIGHT, OUTPUT);
+	digitalWrite(PIN_EYE_RIGHT, HIGH);
 }
 
 
@@ -99,4 +127,6 @@ void setup() {
 void loop() {
 	FastLED.setBrightness(brightness);
 	FastLED.show();
+	digitalWrite(PIN_EYE_LEFT, eye_left);
+	digitalWrite(PIN_EYE_RIGHT, eye_left);
 }
