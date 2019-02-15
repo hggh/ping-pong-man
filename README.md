@@ -2,5 +2,5 @@
 
  * ATTiny85
  * RGB LED PL9823
- * 3mm LED blue
+ * 2x 3mm LED blue for the eyes
  * one switch with copper tape to change pulse color
