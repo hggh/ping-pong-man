@@ -46,6 +46,7 @@ CRGB leds[1];
 #define PIN_RGB_LED 3
 #define PIN_EYE_LEFT 4
 #define PIN_EYE_RIGHT 2
+#define PIN_BUTTON 1
 
 volatile uint8_t brightness = 0;
 volatile uint8_t hold = 0;
@@ -71,8 +72,7 @@ ISR(TIMER1_COMPA_vect) {
 	if (runs > sleep_1) {
 		runs = 0;
 	}
-
-	if (brightness < 10 && hold < 4) {
+	if (brightness < 5 && hold < 6) {
 		hold++;
 		return;
 	}
@@ -80,7 +80,7 @@ ISR(TIMER1_COMPA_vect) {
 	if (brightness > 200) {
 		direction = DIRECTION_DOWN;
 	}
-	if (brightness < 10) {
+	if (brightness < 5) {
 		direction = DIRECTION_UP;
 	}
 
@@ -120,6 +120,8 @@ void setup() {
 
 	pinMode(PIN_EYE_RIGHT, OUTPUT);
 	digitalWrite(PIN_EYE_RIGHT, HIGH);
+
+	pinMode(PIN_BUTTON, INPUT_PULLUP);
 }
 
 
