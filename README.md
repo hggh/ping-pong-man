@@ -6,3 +6,5 @@
  * ATTiny85
  * RGB LED PL9823
  * one push switch to change pulse color
+ * 100nf
+ * micro usb breakout
