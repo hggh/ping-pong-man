@@ -37,11 +37,11 @@ module usb_breakout() {
 
 module stand() {
     union() {
-        translate([19/2, 19/2, 0]) {
-            cylinder(d=19, h=3, $fn=100);
+        translate([20/2, 20/2, 0]) {
+            cylinder(d=20, h=2, $fn=100);
         }
-        translate([2,2, 0]) {
-            cube([8, 8, 3]);
+        translate([1.,1.2, 0]) {
+            cube([8, 8, 2]);
         }
     }
 }
@@ -50,34 +50,34 @@ union() {
     difference() {
         cube([BOX_X, BOX_Y, BOX_Z]);
         translate([BOX_X/ 2, BOX_Y/ 2, 1]) {
-            cylinder(h=10, d=4, center=true);
+            cylinder(h=10, d=5, center=true, $fn=100);
         }
         translate([10, BOX_Y/ 2, 1]) {
-            cylinder(h=10, d=8, center=true, $fn=100);
+            cylinder(h=10, d=7.5, center=true, $fn=100);
         }
     }
     translate([0, 0, -BOX_GROUND_Z]) {
         difference() {
             cube([BOX_X, BOX_Y, BOX_GROUND_Z]);
-            translate([2, 2, -1]) {
-                cube([BOX_X-4, BOX_Y- 4, BOX_GROUND_Z +1]);
+            translate([1.2, 1.2, -1]) {
+                cube([BOX_X-2.4, BOX_Y- 2.4, BOX_GROUND_Z +1]);
             }
-            translate([3, -1, 10]) {
+            translate([BOX_X/2 - 6, -1, 9.5]) {
                 cube([15, 20, 6]);
             }
         }
     }
-    translate([17, 0, -6]) {
+    translate([BOX_X/2 + 16/2, 0, -6]) {
         rotate([0, 0, 90]) usb_breakout();
     }
     
     translate([0, 0, -15]) {
         stand();
     }
-    translate([BOX_X, 0, -15 +3]) {
+    translate([BOX_X, 0, -15 +2]) {
         rotate([0, 180, 0]) stand();
     }
-    translate([0, BOX_Y, -15 +3]) {
+    translate([0, BOX_Y, -15 +2]) {
         rotate([180, 0, 0]) stand();
     }
     translate([BOX_X, BOX_Y, -15]) {
